@@ -9,15 +9,22 @@ const multer = require("multer");
 
 const app = express();
 app.use(express.json());
-const corsOptions = {
-    origin: [
-      "https://frontend-sociofy.vercel.app/",
-      "http://localhost:5173",    
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, 
-  };
-app.use(cors(corsOptions));
+const allowedOrigins = [
+  "https://frontend-sociofy-git-main-rvermas-projects.vercel.app",
+  "http://localhost:5173", // Optional, for local testing
+];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
