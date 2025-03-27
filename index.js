@@ -8,6 +8,13 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 
 const app = express();
+if (process.env.NODE_ENV === "production") {
+  console.log = () => {};
+  console.warn = () => {};
+  console.error = () => {};
+} else {
+  console.log("Server is running in development mode.");
+}
 app.use(express.json());
 const allowedOrigins = [
   "https://frontend-sociofy-git-main-rvermas-projects.vercel.app",
